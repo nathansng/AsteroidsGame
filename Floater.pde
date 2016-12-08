@@ -1,4 +1,11 @@
-abstract class Floater //Do NOT modify the Floater class! Make changes in the Spaceship class 
+/*
+  ___ _           _           
+ | __| |___  __ _| |_ ___ _ _ 
+ | _|| / _ \/ _` |  _/ -_) '_|
+ |_| |_\___/\__,_|\__\___|_|  
+                              
+*/
+abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
   protected int corners;  //the number of corners, a triangular floater has 3   
   protected int[] xCorners;   
@@ -7,16 +14,37 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   protected double myCenterX, myCenterY; //holds center coordinates   
   protected double myDirectionX, myDirectionY; //holds x and y coordinates of the vector for direction of travel   
   protected double myPointDirection; //holds current direction the ship is pointing in degrees    
+
+
   abstract public void setX(int x);  
+
+
   abstract public int getX();   
+
+
   abstract public void setY(int y);   
+
+
   abstract public int getY();   
+
+
   abstract public void setDirectionX(double x);   
-  abstract public double getDirectionX();   
-  abstract public void setDirectionY(double y);   
-  abstract public double getDirectionY();   
-  abstract public void setPointDirection(int degrees);   
-  abstract public double getPointDirection(); 
+
+
+  abstract public double getDirectionX();
+
+
+  abstract public void setDirectionY(double y);
+
+
+  abstract public double getDirectionY();
+
+
+  abstract public void setPointDirection(int degrees);
+
+
+  abstract public double getPointDirection();
+
 
   //Accelerates the floater in the direction it is pointing (myPointDirection)   
   public void accelerate (double dAmount)   
@@ -27,16 +55,23 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     myDirectionX += ((dAmount) * Math.cos(dRadians));    
     myDirectionY += ((dAmount) * Math.sin(dRadians));       
   }   
-  public void turn (int nDegreesOfRotation)   
+  public void rotate (int nDegreesOfRotation)   
   {     
     //rotates the floater by a given number of degrees    
-    myPointDirection+=nDegreesOfRotation;   
+    myPointDirection+=nDegreesOfRotation; 
+    if (myPointDirection < 0) {
+      myPointDirection += 360;
+    }  
+    if (myPointDirection > 360) {
+      myPointDirection -= 360;
+    }
   }   
   public void move ()   //move the floater in the current direction of travel
   {      
     //change the x and y coordinates by myDirectionX and myDirectionY       
     myCenterX += myDirectionX;    
     myCenterY += myDirectionY;     
+
 
     //wrap around screen    
     if(myCenterX >width)
@@ -50,8 +85,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     if(myCenterY >height)
     {    
       myCenterY = 0;    
-    } 
-    
+    }   
     else if (myCenterY < 0)
     {     
       myCenterY = height;    
@@ -61,26 +95,17 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   {             
     fill(myColor);   
     stroke(myColor);    
-    
-    //translate the (x,y) center of the ship to the correct position
-    translate((float)myCenterX, (float)myCenterY);
-
-    //convert degrees to radians for rotate()     
-    float dRadians = (float)(myPointDirection*(Math.PI/180));
-    
-    //rotate so that the polygon will be drawn in the correct direction
-    rotate(dRadians);
-    
-    //draw the polygon
-    beginShape();
-    for (int nI = 0; nI < corners; nI++)
-    {
-      vertex(xCorners[nI], yCorners[nI]);
-    }
-    endShape(CLOSE);
-
-    //"unrotate" and "untranslate" in reverse order
-    rotate(-1*dRadians);
-    translate(-1*(float)myCenterX, -1*(float)myCenterY);
+    //convert degrees to radians for sin and cos         
+    double dRadians = myPointDirection*(Math.PI/180);                 
+    int xRotatedTranslated, yRotatedTranslated;    
+    beginShape();         
+    for(int nI = 0; nI < corners; nI++)    
+    {     
+      //rotate and translate the coordinates of the floater using current direction 
+      xRotatedTranslated = (int)((xCorners[nI]* Math.cos(dRadians)) - (yCorners[nI] * Math.sin(dRadians))+myCenterX);     
+      yRotatedTranslated = (int)((xCorners[nI]* Math.sin(dRadians)) + (yCorners[nI] * Math.cos(dRadians))+myCenterY);      
+      vertex(xRotatedTranslated,yRotatedTranslated);    
+    }   
+    endShape(CLOSE);  
   }   
 } 
