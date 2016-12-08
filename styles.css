@@ -1,10 +1,15 @@
-
 body {
-    background-color: rgb(200,200,200);
-    color: rgb(0,0,0);
-    font-family: "Open Sans", sans-serif;
+    background: url('space-1.jpg');
+    background-repeat: none;
+    background-size: cover;
+    background-position: center center;
+
+
+    color: rgb(255, 255, 255);
+    font-family: 'Press Start 2P', cursive;
     text-align: center;
 }
+
 
 #content {
     display: block;
@@ -12,12 +17,13 @@ body {
     margin-right: auto
 }
 
+
 header {
-	
+    
 }
+
 
 footer {
-	font-style: italic;
-	font-size: 90%;
+    font-style: italic;
+    font-size: 90%;
 }
-
